@@ -1,7 +1,9 @@
 {
   "name": "skycast",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "src/index.ts",
+  "type": "module",
+  "packageManager": "pnpm@10.24.0",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -15,7 +17,9 @@
     "react-native": "0.81.5"
   },
   "devDependencies": {
+    "@christopherjbaker/eslint-config": "^3.1.4",
     "@types/react": "~19.1.0",
+    "eslint": "^9.39.4",
     "typescript": "~5.9.2"
   },
   "private": true
