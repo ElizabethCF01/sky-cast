@@ -1,13 +1,13 @@
-import cloudyGif from "../../../../assets/weather/cloudy.gif"
-import drizzleGif from "../../../../assets/weather/drizzle.gif"
-import foggyGif from "../../../../assets/weather/foggy.gif"
-import partlyCloudyGif from "../../../../assets/weather/partly-cloudy.gif"
-import rainGif from "../../../../assets/weather/rain.gif"
-import showersGif from "../../../../assets/weather/showers.gif"
-import snowStormGif from "../../../../assets/weather/snow-storm.gif"
-import snowGif from "../../../../assets/weather/snow.gif"
-import stormGif from "../../../../assets/weather/storm.gif"
-import sunGif from "../../../../assets/weather/sun.gif"
+import cloudyGif from "../assets/cloudy.gif"
+import drizzleGif from "../assets/drizzle.gif"
+import foggyGif from "../assets/foggy.gif"
+import partlyCloudyGif from "../assets/partly-cloudy.gif"
+import rainGif from "../assets/rain.gif"
+import showersGif from "../assets/showers.gif"
+import snowStormGif from "../assets/snow-storm.gif"
+import snowGif from "../assets/snow.gif"
+import stormGif from "../assets/storm.gif"
+import sunGif from "../assets/sun.gif"
 
 export function getWeatherInfo(code: number): { label: string; gif: number } {
   if (code === 0) return { label: "Clear", gif: sunGif }
