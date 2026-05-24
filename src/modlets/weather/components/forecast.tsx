@@ -2,12 +2,13 @@ import { Image } from "expo-image"
 import { type JSX } from "react"
 import { ScrollView, StyleSheet, Text, View } from "react-native"
 
-import { getWeatherInfo, type WeatherData } from "../api/open-meteo"
+import { getWeatherInfo } from "../services/weather-info"
+import { type ForecastDay } from "../types"
 
 export default function Forecast({
   days,
 }: {
-  days: WeatherData["forecast"]
+  days: ForecastDay[]
 }): JSX.Element {
   return (
     <ScrollView

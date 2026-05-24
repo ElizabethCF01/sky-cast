@@ -2,11 +2,9 @@ import { Image } from "expo-image"
 import { type JSX, useEffect, useState } from "react"
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native"
 
-import {
-  fetchWeather,
-  getWeatherInfo,
-  type WeatherData,
-} from "../api/open-meteo"
+import { fetchWeather } from "../services/open-meteo"
+import { getWeatherInfo } from "../services/weather-info"
+import { type WeatherData } from "../types"
 
 import Forecast from "./forecast"
 
