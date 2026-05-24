@@ -4,7 +4,7 @@ import type React from "react"
 
 export default function TabLayout(): React.ReactNode {
   return (
-    <Tabs>
+    <Tabs screenOptions={{ tabBarActiveTintColor: "#0487E2" }}>
       <Tabs.Screen
         name="index"
         options={{
