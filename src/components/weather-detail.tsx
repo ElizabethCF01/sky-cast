@@ -1,7 +1,12 @@
+import { Image } from "expo-image"
 import { type JSX, useEffect, useState } from "react"
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native"
 
-import { fetchWeather, type WeatherData } from "../api/open-meteo"
+import {
+  fetchWeather,
+  getWeatherInfo,
+  type WeatherData,
+} from "../api/open-meteo"
 
 import Forecast from "./forecast"
 
@@ -42,23 +47,24 @@ export default function WeatherDetail(): JSX.Element {
     )
   }
 
+  const info = getWeatherInfo(weatherData.current.weatherCode)
+
   return (
     <View style={styles.container}>
       <View style={styles.city}>
+        <Image source={info.gif} style={styles.gif} />
         <Text style={styles.name}>{CITY.name}</Text>
         <Text style={styles.temperature}>
-          {Math.round(weatherData?.current.temperatureC)}°C
+          {Math.round(weatherData.current.temperatureC)}°C
         </Text>
-        <Text style={styles.condition}>
-          code {weatherData?.current.weatherCode}
-        </Text>
+        <Text style={styles.condition}>{info.label}</Text>
         <Text style={styles.meta}>
-          Humidity {Math.round(weatherData?.current.humidityPct)}% · Wind{" "}
-          {weatherData?.current.windSpeedKmh.toFixed(1)} km/h
+          Humidity {Math.round(weatherData.current.humidityPct)}% · Wind{" "}
+          {weatherData.current.windSpeedKmh.toFixed(1)} km/h
         </Text>
       </View>
 
-      <Forecast days={weatherData?.forecast} />
+      <Forecast days={weatherData.forecast} />
     </View>
   )
 }
@@ -70,7 +76,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flex: 1,
     gap: 30,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingVertical: 40,
   },
   city: {
@@ -79,15 +85,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 4,
   },
-  card: {
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 10,
-    padding: 20,
-    elevation: 5,
-    paddingHorizontal: 40,
-    paddingVertical: 30,
-    alignSelf: "stretch",
+  gif: {
+    width: 140,
+    height: 140,
   },
   name: {
     color: "#000000",
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   temperature: {
     color: "#000000",
-    fontSize: 48,
+    fontSize: 72,
     fontWeight: "bold",
     marginVertical: 8,
   },
