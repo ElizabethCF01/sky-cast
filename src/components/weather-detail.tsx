@@ -76,8 +76,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flex: 1,
     gap: 30,
-    paddingHorizontal: 16,
-    paddingVertical: 40,
   },
   city: {
     alignSelf: "stretch",
