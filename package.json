@@ -4,6 +4,10 @@
   "main": "expo-router/entry",
   "type": "module",
   "packageManager": "pnpm@10.24.0",
+  "imports": {
+    "#design/*": "./src/shared/design/*/index.ts",
+    "#shared/*": "./src/shared/*"
+  },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",

@@ -1,6 +1,9 @@
 import { Image } from "expo-image"
 import { type JSX, useEffect, useState } from "react"
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native"
+import { ActivityIndicator, StyleSheet, View } from "react-native"
+
+import { Typography } from "#design/elements"
+import { colors, spacing } from "#design/foundations"
 
 import { fetchWeather } from "../services/open-meteo"
 import { getWeatherInfo } from "../services/weather-info"
@@ -40,7 +43,9 @@ export default function WeatherDetail(): JSX.Element {
   if (!weatherData) {
     return (
       <View style={styles.container}>
-        <Text style={styles.error}>Failed to load weather data</Text>
+        <Typography variant="caption" color="danger" style={styles.error}>
+          Failed to load weather data
+        </Typography>
       </View>
     )
   }
@@ -51,15 +56,21 @@ export default function WeatherDetail(): JSX.Element {
     <View style={styles.container}>
       <View style={styles.city}>
         <Image source={info.gif} style={styles.gif} />
-        <Text style={styles.name}>{CITY.name}</Text>
-        <Text style={styles.temperature}>
+        <Typography variant="heading">{CITY.name}</Typography>
+        <Typography variant="display" style={styles.temperature}>
           {Math.round(weatherData.current.temperatureC)}°C
-        </Text>
-        <Text style={styles.condition}>{info.label}</Text>
-        <Text style={styles.meta}>
+        </Typography>
+        <Typography
+          variant="body"
+          color="textSecondary"
+          style={styles.condition}
+        >
+          {info.label}
+        </Typography>
+        <Typography variant="caption" color="textMuted">
           Humidity {Math.round(weatherData.current.humidityPct)}% · Wind{" "}
           {weatherData.current.windSpeedKmh.toFixed(1)} km/h
-        </Text>
+        </Typography>
       </View>
 
       <Forecast days={weatherData.forecast} />
@@ -69,46 +80,30 @@ export default function WeatherDetail(): JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
-    gap: 30,
+    gap: spacing.xxxl,
   },
   city: {
     alignSelf: "stretch",
     justifyContent: "center",
     alignItems: "center",
-    gap: 4,
+    gap: spacing.xs,
   },
   gif: {
     width: 140,
     height: 140,
   },
-  name: {
-    color: "#000000",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
   temperature: {
-    color: "#000000",
-    fontSize: 72,
-    fontWeight: "bold",
-    marginVertical: 8,
+    marginVertical: spacing.sm,
   },
   condition: {
-    color: "#333333",
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  meta: {
-    color: "#666666",
-    fontSize: 14,
+    marginBottom: spacing.sm,
   },
   error: {
-    color: "#CC0000",
-    fontSize: 14,
     textAlign: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: spacing.xl,
   },
 })

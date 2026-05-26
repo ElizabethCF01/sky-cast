@@ -1,6 +1,9 @@
 import { Image } from "expo-image"
 import { type JSX } from "react"
-import { ScrollView, StyleSheet, Text, View } from "react-native"
+import { ScrollView, StyleSheet, View } from "react-native"
+
+import { Typography } from "#design/elements"
+import { colors, radii, spacing } from "#design/foundations"
 
 import { getWeatherInfo } from "../services/weather-info"
 import { type ForecastDay } from "../types"
@@ -22,20 +25,24 @@ export default function Forecast({
         return (
           <View key={day.date} style={styles.col}>
             <Image source={info.gif} style={styles.gif} />
-            <Text style={styles.temps}>{Math.round(day.maxTempC)}°</Text>
-            <Text style={styles.tempLow}>{Math.round(day.minTempC)}°</Text>
+            <Typography variant="bodyStrong">
+              {Math.round(day.maxTempC)}°
+            </Typography>
+            <Typography variant="caption" color="textMuted">
+              {Math.round(day.minTempC)}°
+            </Typography>
             <View style={styles.date}>
-              <Text style={styles.day}>
+              <Typography variant="bodyStrong" style={styles.day}>
                 {new Date(day.date).toLocaleDateString("en-US", {
                   weekday: "short",
                 })}
-              </Text>
-              <Text style={styles.day}>
+              </Typography>
+              <Typography variant="bodyStrong" style={styles.day}>
                 {new Date(day.date).toLocaleDateString("en-US", {
                   month: "2-digit",
                   day: "2-digit",
                 })}
-              </Text>
+              </Typography>
             </View>
           </View>
         )
@@ -46,48 +53,36 @@ export default function Forecast({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
+    backgroundColor: colors.surface,
+    borderRadius: radii.md,
     elevation: 3,
     alignSelf: "stretch",
     flexGrow: 0,
-    shadowColor: "#00000075",
+    shadowColor: colors.shadow,
   },
   content: {
-    padding: 20,
-    gap: 12,
+    padding: spacing.xl,
+    gap: spacing.md,
     alignItems: "center",
   },
   col: {
     alignItems: "center",
-    borderRadius: 10,
+    borderRadius: radii.md,
     borderWidth: 1,
-    borderColor: "#EEEEEE",
-    paddingBottom: 8,
+    borderColor: colors.border,
+    paddingBottom: spacing.sm,
   },
   gif: {
     width: 36,
     height: 36,
   },
   date: {
-    marginTop: 30,
+    marginTop: spacing.xxxl,
     gap: 2,
     alignItems: "center",
   },
   day: {
-    color: "#000000",
-    fontSize: 16,
-    fontWeight: "600",
     width: 60,
     textAlign: "center",
-  },
-  temps: {
-    color: "#000000",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  tempLow: {
-    color: "#666666",
-    fontSize: 14,
   },
 })
