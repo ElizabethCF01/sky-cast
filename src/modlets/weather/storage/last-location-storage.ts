@@ -1,4 +1,4 @@
-import { getJSON, setJSON } from "#shared/storage"
+import { getJSON, removeKey, setJSON } from "#shared/storage"
 
 import { type Location } from "../types"
 
@@ -10,4 +10,8 @@ export async function readLastLocation(): Promise<Location | null> {
 
 export async function writeLastLocation(location: Location): Promise<void> {
   await setJSON(LAST_LOCATION_KEY, location)
+}
+
+export async function clearLastLocation(): Promise<void> {
+  await removeKey(LAST_LOCATION_KEY)
 }

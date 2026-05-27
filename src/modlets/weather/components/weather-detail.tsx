@@ -6,13 +6,14 @@ import { Typography } from "#design/elements"
 import { colors, spacing } from "#design/foundations"
 
 import { useLastLocation } from "../hooks/use-last-location"
+import { getDeviceLocation } from "../services/device-location"
 import { fetchWeather } from "../services/open-meteo"
 import { getWeatherInfo } from "../services/weather-info"
 import { type Location, type WeatherData } from "../types"
 
 import Forecast from "./forecast"
 
-const DEFAULT_LOCATION: Location = {
+const FALLBACK_LOCATION: Location = {
   name: "Barcelona",
   latitude: 41.3851,
   longitude: 2.1734,
@@ -20,26 +21,39 @@ const DEFAULT_LOCATION: Location = {
 
 export default function WeatherDetail(): JSX.Element {
   const { lastLocation, isLoaded, rememberLocation } = useLastLocation()
+  const [activeLocation, setActiveLocation] = useState<Location | null>(null)
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const activeLocation = lastLocation ?? DEFAULT_LOCATION
+  useEffect(() => {
+    if (!isLoaded || activeLocation) return
+    async function resolve(): Promise<void> {
+      const deviceLocation = await getDeviceLocation()
+      if (deviceLocation) {
+        setActiveLocation(deviceLocation)
+        return
+      }
+      setActiveLocation(lastLocation ?? FALLBACK_LOCATION)
+    }
+    void resolve()
+  }, [isLoaded, lastLocation, activeLocation])
 
   useEffect(() => {
-    if (!isLoaded) return
+    if (!activeLocation) return
+    const location = activeLocation
     async function load(): Promise<void> {
       try {
-        const data = await fetchWeather(activeLocation)
+        const data = await fetchWeather(location)
         setWeatherData(data)
-        await rememberLocation(activeLocation)
+        await rememberLocation(location)
       } finally {
         setLoading(false)
       }
     }
     void load()
-  }, [isLoaded, activeLocation, rememberLocation])
+  }, [activeLocation, rememberLocation])
 
-  if (loading) {
+  if (loading || !activeLocation) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" />

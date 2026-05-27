@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 
 import {
+  clearLastLocation,
   readLastLocation,
   writeLastLocation,
 } from "../storage/last-location-storage"
@@ -10,6 +11,7 @@ type UseLastLocationResult = {
   lastLocation: Location | null
   isLoaded: boolean
   rememberLocation: (location: Location) => Promise<void>
+  forgetLocation: () => Promise<void>
 }
 
 export function useLastLocation(): UseLastLocationResult {
@@ -33,5 +35,10 @@ export function useLastLocation(): UseLastLocationResult {
     [],
   )
 
-  return { lastLocation, isLoaded, rememberLocation }
+  const forgetLocation = useCallback(async (): Promise<void> => {
+    setLastLocation(null)
+    await clearLastLocation()
+  }, [])
+
+  return { lastLocation, isLoaded, rememberLocation, forgetLocation }
 }
