@@ -3,6 +3,10 @@ export type Coordinates = {
   longitude: number
 }
 
+export type Location = Coordinates & {
+  name: string
+}
+
 export type WeatherData = {
   current: {
     temperatureC: number

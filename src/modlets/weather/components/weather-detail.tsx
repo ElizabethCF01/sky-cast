@@ -5,33 +5,39 @@ import { ActivityIndicator, StyleSheet, View } from "react-native"
 import { Typography } from "#design/elements"
 import { colors, spacing } from "#design/foundations"
 
+import { useLastLocation } from "../hooks/use-last-location"
 import { fetchWeather } from "../services/open-meteo"
 import { getWeatherInfo } from "../services/weather-info"
-import { type WeatherData } from "../types"
+import { type Location, type WeatherData } from "../types"
 
 import Forecast from "./forecast"
 
-const CITY = {
+const DEFAULT_LOCATION: Location = {
   name: "Barcelona",
   latitude: 41.3851,
   longitude: 2.1734,
 }
 
 export default function WeatherDetail(): JSX.Element {
+  const { lastLocation, isLoaded, rememberLocation } = useLastLocation()
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
   const [loading, setLoading] = useState(true)
 
+  const activeLocation = lastLocation ?? DEFAULT_LOCATION
+
   useEffect(() => {
+    if (!isLoaded) return
     async function load(): Promise<void> {
       try {
-        const data = await fetchWeather(CITY)
+        const data = await fetchWeather(activeLocation)
         setWeatherData(data)
+        await rememberLocation(activeLocation)
       } finally {
         setLoading(false)
       }
     }
     void load()
-  }, [])
+  }, [isLoaded, activeLocation, rememberLocation])
 
   if (loading) {
     return (
@@ -56,7 +62,7 @@ export default function WeatherDetail(): JSX.Element {
     <View style={styles.container}>
       <View style={styles.city}>
         <Image source={info.gif} style={styles.gif} />
-        <Typography variant="heading">{CITY.name}</Typography>
+        <Typography variant="heading">{activeLocation.name}</Typography>
         <Typography variant="display" style={styles.temperature}>
           {Math.round(weatherData.current.temperatureC)}°C
         </Typography>
