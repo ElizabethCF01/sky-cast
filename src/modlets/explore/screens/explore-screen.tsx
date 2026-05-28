@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router"
 import type React from "react"
 import {
   ActivityIndicator,
@@ -61,10 +62,28 @@ export default function ExploreScreen(): React.ReactNode {
 }
 
 function ResultRow({ result }: { result: LocationResult }): React.ReactNode {
+  const router = useRouter()
   const subtitle = [result.admin1, result.country].filter(Boolean).join(", ")
 
+  function handlePress(): void {
+    router.push({
+      pathname: "/explore/[id]",
+      params: {
+        id: result.id,
+        name: result.name,
+        admin1: result.admin1 ?? "",
+        country: result.country,
+        latitude: result.latitude,
+        longitude: result.longitude,
+      },
+    })
+  }
+
   return (
-    <Pressable style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}>
+    <Pressable
+      style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+      onPress={handlePress}
+    >
       <Typography variant="bodyStrong">{result.name}</Typography>
       <Typography variant="caption" color="textMuted">
         {subtitle}
