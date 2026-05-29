@@ -5,11 +5,10 @@ import {
   FlatList,
   Pressable,
   StyleSheet,
-  TextInput,
   View,
 } from "react-native"
 
-import { Typography } from "#design/elements"
+import { SearchInput, Typography } from "#design/elements"
 import { colors, radii, spacing } from "#design/foundations"
 
 import { useLocationSearch } from "../hooks/use-location-search"
@@ -23,16 +22,10 @@ export default function ExploreScreen(): React.ReactNode {
       <Typography variant="title" style={styles.heading}>
         Explore
       </Typography>
-      <TextInput
-        style={styles.input}
+      <SearchInput
         value={query}
         onChangeText={setQuery}
         placeholder="Search for a city…"
-        placeholderTextColor={colors.textMuted}
-        returnKeyType="search"
-        clearButtonMode="while-editing"
-        autoCorrect={false}
-        autoCapitalize="words"
       />
       {isLoading && (
         <ActivityIndicator
@@ -101,16 +94,6 @@ const styles = StyleSheet.create({
   },
   heading: {
     marginBottom: spacing.lg,
-  },
-  input: {
-    height: 44,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radii.md,
-    paddingHorizontal: spacing.md,
-    fontSize: 16,
-    color: colors.textPrimary,
-    backgroundColor: colors.surface,
   },
   indicator: {
     marginTop: spacing.lg,
