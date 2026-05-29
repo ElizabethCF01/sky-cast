@@ -1,14 +1,14 @@
-import { Image } from "expo-image"
+import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { useLocalSearchParams } from "expo-router"
 import type React from "react"
-import { ActivityIndicator, StyleSheet, View } from "react-native"
+import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native"
 
 import { Typography } from "#design/elements"
-import { colors, spacing } from "#design/foundations"
+import { colors, radii, spacing } from "#design/foundations"
 
-import Forecast from "../../weather/components/forecast"
-import { getWeatherInfo } from "../../weather/services/weather-info"
-import { useLocationWeather } from "../hooks/use-location-weather"
+import { useFavorites } from "../../favorites"
+import { useLocationWeather } from "../../weather"
+import LocationWeatherView from "../../weather/components/location-weather-view"
 
 type Params = {
   id: string
@@ -20,14 +20,23 @@ type Params = {
 }
 
 export default function LocationWeatherScreen(): React.ReactNode {
-  const { name, admin1, country, latitude, longitude } = useLocalSearchParams<Params>()
+  const { id, name, admin1, country, latitude, longitude } = useLocalSearchParams<Params>()
 
   const { data, isLoading, error } = useLocationWeather({
     latitude: Number(latitude),
     longitude: Number(longitude),
   })
 
-  const subtitle = [admin1, country].filter(Boolean).join(", ")
+  const { favorites, addFavorite, removeFavorite } = useFavorites()
+  const isSaved = favorites.some((f) => f.id === id)
+
+  function handleToggleSave(): void {
+    if (isSaved) {
+      removeFavorite(id)
+    } else {
+      addFavorite({ id, name, latitude: Number(latitude), longitude: Number(longitude) })
+    }
+  }
 
   if (isLoading) {
     return (
@@ -47,27 +56,28 @@ export default function LocationWeatherScreen(): React.ReactNode {
     )
   }
 
-  const info = getWeatherInfo(data.current.weatherCode)
+  const subtitle = [admin1, country].filter(Boolean).join(", ")
 
   return (
-    <View style={styles.container}>
-      <Image source={info.gif} style={styles.gif} />
-      <View style={styles.header}>
-        <Typography variant="heading">{name}</Typography>
-        <Typography variant="caption" color="textMuted">
-          {subtitle}
+    <LocationWeatherView name={name} subtitle={subtitle} data={data}>
+      <Pressable
+        style={({ pressed }) => [
+          styles.saveButton,
+          isSaved && styles.saveButtonSaved,
+          pressed && styles.saveButtonPressed,
+        ]}
+        onPress={handleToggleSave}
+      >
+        <FontAwesome
+          name={isSaved ? "star" : "star-o"}
+          size={16}
+          color={isSaved ? colors.textPrimary : colors.textOnBrand}
+        />
+        <Typography variant="bodyStrong" color={isSaved ? "textPrimary" : "textOnBrand"}>
+          {isSaved ? "Saved" : "Save to favorites"}
         </Typography>
-      </View>
-      <Typography variant="display">{Math.round(data.current.temperatureC)}°C</Typography>
-      <Typography variant="body" color="textSecondary">
-        {info.label}
-      </Typography>
-      <Typography variant="caption" color="textMuted">
-        Humidity {Math.round(data.current.humidityPct)}% · Wind{" "}
-        {data.current.windSpeedKmh.toFixed(1)} km/h
-      </Typography>
-      <Forecast days={data.forecast} />
-    </View>
+      </Pressable>
+    </LocationWeatherView>
   )
 }
 
@@ -78,20 +88,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.background,
   },
-  container: {
-    flex: 1,
+  saveButton: {
+    alignSelf: "stretch",
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.background,
-    padding: spacing.xl,
-    gap: spacing.lg,
+    paddingVertical: spacing.md,
+    borderRadius: radii.md,
+    backgroundColor: colors.brand,
+    gap: spacing.sm,
   },
-  gif: {
-    width: 140,
-    height: 140,
+  saveButtonSaved: {
+    backgroundColor: colors.border,
   },
-  header: {
-    alignItems: "center",
-    gap: spacing.xs,
+  saveButtonPressed: {
+    opacity: 0.7,
   },
 })

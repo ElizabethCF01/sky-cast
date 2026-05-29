@@ -1,0 +1,70 @@
+import { Image } from "expo-image"
+import type React from "react"
+import { StyleSheet, View } from "react-native"
+
+import { Typography } from "#design/elements"
+import { colors, spacing } from "#design/foundations"
+
+import { getWeatherInfo } from "../services/weather-info"
+import { type WeatherData } from "../types"
+
+import Forecast from "./forecast"
+
+type Props = {
+  name: string
+  subtitle?: string
+  data: WeatherData
+  children?: React.ReactNode
+}
+
+export default function LocationWeatherView({
+  name,
+  subtitle,
+  data,
+  children,
+}: Props): React.ReactNode {
+  const info = getWeatherInfo(data.current.weatherCode)
+
+  return (
+    <View style={styles.container}>
+      <Image source={info.gif} style={styles.gif} />
+      <View style={styles.location}>
+        <Typography variant="heading">{name}</Typography>
+        {subtitle !== undefined && subtitle.length > 0 && (
+          <Typography variant="caption" color="textMuted">
+            {subtitle}
+          </Typography>
+        )}
+      </View>
+      <Typography variant="display">{Math.round(data.current.temperatureC)}°C</Typography>
+      <Typography variant="body" color="textSecondary">
+        {info.label}
+      </Typography>
+      <Typography variant="caption" color="textMuted">
+        Humidity {Math.round(data.current.humidityPct)}% · Wind{" "}
+        {data.current.windSpeedKmh.toFixed(1)} km/h
+      </Typography>
+      <Forecast days={data.forecast} />
+      {children}
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.background,
+    padding: spacing.xl,
+    gap: spacing.lg,
+  },
+  gif: {
+    width: 140,
+    height: 140,
+  },
+  location: {
+    alignItems: "center",
+    gap: spacing.xs,
+  },
+})

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
-import { fetchWeather } from "../../weather/services/open-meteo"
-import { type WeatherData } from "../../weather/types"
+import { fetchWeather } from "../services/open-meteo"
+import { type WeatherData } from "../types"
 
 type Params = {
   latitude: number

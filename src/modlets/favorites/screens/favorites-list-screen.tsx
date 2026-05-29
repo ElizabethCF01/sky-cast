@@ -1,57 +1,140 @@
-import { Link } from "expo-router"
+import FontAwesome from "@expo/vector-icons/FontAwesome"
+import { useRouter } from "expo-router"
 import type React from "react"
-import { Pressable, StyleSheet, Text, View } from "react-native"
+import { FlatList, Pressable, StyleSheet, View } from "react-native"
+
+import { Typography } from "#design/elements"
+import { colors, radii, spacing } from "#design/foundations"
 
 import { useFavorites } from "../hooks/use-favorites"
 import { type Favorite } from "../types"
 
-const SAMPLE_FAVORITE: Favorite = {
-  id: "barcelona",
-  name: "Barcelona",
-  latitude: 41.3851,
-  longitude: 2.1734,
-}
-
 export default function FavoritesListScreen(): React.ReactNode {
-  const { favorites, addFavorite, removeFavorite } = useFavorites()
+  const { favorites, isLoaded, removeFavorite } = useFavorites()
+
+  if (!isLoaded) return null
+
+  if (favorites.length === 0) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.empty}>
+          <FontAwesome name="star-o" size={48} color={colors.border} />
+          <Typography variant="title" style={styles.emptyTitle}>
+            No favorites yet
+          </Typography>
+          <Typography variant="body" color="textMuted" style={styles.emptyHint}>
+            Search for a city in Explore and save it here.
+          </Typography>
+        </View>
+      </View>
+    )
+  }
 
   return (
-    <View style={styles.container}>
-      <Text>Favorites ({favorites.length})</Text>
-      {favorites.map((entry) => (
-        <Pressable key={entry.id} onPress={() => void removeFavorite(entry.id)}>
-          <Text>{entry.name} (tap to remove)</Text>
-        </Pressable>
-      ))}
-      <Pressable
-        style={styles.link}
-        onPress={() => void addFavorite(SAMPLE_FAVORITE)}
-      >
-        <Text style={styles.linkLabel}>Add Barcelona</Text>
+    <FlatList
+      data={favorites}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <FavoriteRow
+          favorite={item}
+          onRemove={() => removeFavorite(item.id)}
+        />
+      )}
+      ListHeaderComponent={
+        <Typography variant="title" style={styles.heading}>
+          Your Favorites
+        </Typography>
+      }
+      contentContainerStyle={styles.list}
+    />
+  )
+}
+
+function FavoriteRow({
+  favorite,
+  onRemove,
+}: {
+  favorite: Favorite
+  onRemove: () => void
+}): React.ReactNode {
+  const router = useRouter()
+
+  function handlePress(): void {
+    router.push({
+      pathname: "/favorites/[slug]",
+      params: {
+        slug: favorite.id,
+        name: favorite.name,
+        latitude: favorite.latitude,
+        longitude: favorite.longitude,
+      },
+    })
+  }
+
+  return (
+    <Pressable
+      style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+      onPress={handlePress}
+    >
+      <View style={styles.rowContent}>
+        <FontAwesome name="map-marker" size={18} color={colors.brand} />
+        <Typography variant="bodyStrong">{favorite.name}</Typography>
+      </View>
+      <Pressable onPress={onRemove} hitSlop={12} style={styles.removeButton}>
+        <FontAwesome name="trash-o" size={20} color={colors.textMuted} />
       </Pressable>
-      <Link style={styles.link} href="/favorites/1">
-        <Text style={styles.linkLabel}>Some Favorite</Text>
-      </Link>
-    </View>
+    </Pressable>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.background,
+    padding: spacing.xl,
+    gap: spacing.lg,
+  },
+  heading: {
+    marginBottom: spacing.sm,
+  },
+  empty: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    gap: 12,
+    backgroundColor: colors.background,
+    padding: spacing.xl,
+    gap: spacing.md,
   },
-  link: {
-    marginTop: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    backgroundColor: "#0487E2",
+  emptyTitle: {
+    marginTop: spacing.sm,
   },
-  linkLabel: {
-    color: "white",
+  emptyHint: {
     textAlign: "center",
+  },
+  list: {
+    padding: spacing.xl,
+    gap: spacing.sm,
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: radii.md,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+  },
+  rowPressed: {
+    opacity: 0.6,
+  },
+  rowContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.md,
+  },
+  removeButton: {
+    padding: spacing.xs,
   },
 })
