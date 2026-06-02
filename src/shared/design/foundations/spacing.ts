@@ -7,5 +7,3 @@ export const spacing = {
   xxl: 24,
   xxxl: 32,
 } as const
-
-export type SpacingToken = keyof typeof spacing

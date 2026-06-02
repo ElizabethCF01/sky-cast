@@ -1,9 +1,3 @@
-export { colors, type ColorToken } from "./colors"
-export {
-  fontSize,
-  fontWeight,
-  textVariants,
-  type TextVariant,
-} from "./typography"
-export { spacing, type SpacingToken } from "./spacing"
-export { radii, type RadiusToken } from "./radii"
+export { colors } from "./colors"
+export { spacing } from "./spacing"
+export { radii } from "./radii"

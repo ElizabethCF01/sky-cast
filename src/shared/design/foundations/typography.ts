@@ -1,6 +1,6 @@
 import { type TextStyle } from "react-native"
 
-export const fontSize = {
+const fontSize = {
   caption: 14,
   body: 16,
   title: 22,
@@ -8,7 +8,7 @@ export const fontSize = {
   display: 72,
 } as const
 
-export const fontWeight = {
+const fontWeight = {
   regular: "400",
   semibold: "600",
   bold: "bold",
