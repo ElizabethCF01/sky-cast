@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useEffect, useState } from "react"
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 import type React from "react"
 
 import { readFavorites, writeFavorites } from "./storage/favorites-storage"
@@ -50,7 +56,9 @@ export function FavoritesProvider({
   }, [])
 
   return (
-    <FavoritesContext.Provider value={{ favorites, isLoaded, addFavorite, removeFavorite }}>
+    <FavoritesContext.Provider
+      value={{ favorites, isLoaded, addFavorite, removeFavorite }}
+    >
       {children}
     </FavoritesContext.Provider>
   )
@@ -58,6 +66,7 @@ export function FavoritesProvider({
 
 export function useFavorites(): FavoritesContextValue {
   const ctx = useContext(FavoritesContext)
-  if (ctx === null) throw new Error("useFavorites must be used within FavoritesProvider")
+  if (ctx === null)
+    throw new Error("useFavorites must be used within FavoritesProvider")
   return ctx
 }

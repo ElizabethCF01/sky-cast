@@ -20,7 +20,8 @@ type Params = {
 }
 
 export default function LocationWeatherScreen(): React.ReactNode {
-  const { id, name, admin1, country, latitude, longitude } = useLocalSearchParams<Params>()
+  const { id, name, admin1, country, latitude, longitude } =
+    useLocalSearchParams<Params>()
 
   const { data, isLoading, error } = useLocationWeather({
     latitude: Number(latitude),
@@ -34,7 +35,12 @@ export default function LocationWeatherScreen(): React.ReactNode {
     if (isSaved) {
       removeFavorite(id)
     } else {
-      addFavorite({ id, name, latitude: Number(latitude), longitude: Number(longitude) })
+      addFavorite({
+        id,
+        name,
+        latitude: Number(latitude),
+        longitude: Number(longitude),
+      })
     }
   }
 
@@ -73,7 +79,10 @@ export default function LocationWeatherScreen(): React.ReactNode {
           size={16}
           color={isSaved ? colors.textPrimary : colors.textOnBrand}
         />
-        <Typography variant="bodyStrong" color={isSaved ? "textPrimary" : "textOnBrand"}>
+        <Typography
+          variant="bodyStrong"
+          color={isSaved ? "textPrimary" : "textOnBrand"}
+        >
           {isSaved ? "Saved" : "Save to favorites"}
         </Typography>
       </Pressable>

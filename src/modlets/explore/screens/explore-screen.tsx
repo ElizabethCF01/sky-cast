@@ -28,21 +28,25 @@ export default function ExploreScreen(): React.ReactNode {
         placeholder="Search for a city…"
       />
       {isLoading && (
-        <ActivityIndicator
-          style={styles.indicator}
-          color={colors.brand}
-        />
+        <ActivityIndicator style={styles.indicator} color={colors.brand} />
       )}
       {error !== null && (
         <Typography variant="caption" color="danger" style={styles.message}>
           {error}
         </Typography>
       )}
-      {!isLoading && error === null && results.length === 0 && query.trim().length >= 2 && (
-        <Typography variant="caption" color="textMuted" style={styles.message}>
-          No results found.
-        </Typography>
-      )}
+      {!isLoading &&
+        error === null &&
+        results.length === 0 &&
+        query.trim().length >= 2 && (
+          <Typography
+            variant="caption"
+            color="textMuted"
+            style={styles.message}
+          >
+            No results found.
+          </Typography>
+        )}
       <FlatList
         data={results}
         keyExtractor={(item) => String(item.id)}

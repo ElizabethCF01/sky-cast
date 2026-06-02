@@ -14,7 +14,10 @@ type UseLocationWeatherResult = {
   error: string | null
 }
 
-export function useLocationWeather({ latitude, longitude }: Params): UseLocationWeatherResult {
+export function useLocationWeather({
+  latitude,
+  longitude,
+}: Params): UseLocationWeatherResult {
   const [data, setData] = useState<WeatherData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)

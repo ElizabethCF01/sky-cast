@@ -36,7 +36,9 @@ export default function LocationWeatherView({
           </Typography>
         )}
       </View>
-      <Typography variant="display">{Math.round(data.current.temperatureC)}°C</Typography>
+      <Typography variant="display">
+        {Math.round(data.current.temperatureC)}°C
+      </Typography>
       <Typography variant="body" color="textSecondary">
         {info.label}
       </Typography>

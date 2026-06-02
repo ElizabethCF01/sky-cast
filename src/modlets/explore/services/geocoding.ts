@@ -16,7 +16,9 @@ type ApiResponse = {
   results?: ApiResult[]
 }
 
-export async function searchLocations(query: string): Promise<LocationResult[]> {
+export async function searchLocations(
+  query: string,
+): Promise<LocationResult[]> {
   const params = new URLSearchParams({
     name: query,
     count: "10",

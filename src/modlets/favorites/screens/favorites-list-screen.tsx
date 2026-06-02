@@ -35,10 +35,7 @@ export default function FavoritesListScreen(): React.ReactNode {
       data={favorites}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <FavoriteRow
-          favorite={item}
-          onRemove={() => removeFavorite(item.id)}
-        />
+        <FavoriteRow favorite={item} onRemove={() => removeFavorite(item.id)} />
       )}
       ListHeaderComponent={
         <Typography variant="title" style={styles.heading}>
