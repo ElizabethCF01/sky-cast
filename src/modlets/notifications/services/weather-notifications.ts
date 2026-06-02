@@ -19,7 +19,7 @@ export async function requestNotificationPermission(): Promise<boolean> {
       allowSound: true,
     },
   })
-  return status === "granted"
+  return status === Notifications.PermissionStatus.GRANTED
 }
 
 type ScheduleParams = {

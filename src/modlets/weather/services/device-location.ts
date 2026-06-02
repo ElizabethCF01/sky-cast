@@ -4,7 +4,7 @@ import { type Location } from "../types"
 
 export async function getDeviceLocation(): Promise<Location | null> {
   const { status } = await ExpoLocation.requestForegroundPermissionsAsync()
-  if (status !== "granted") return null
+  if (status !== ExpoLocation.PermissionStatus.GRANTED) return null
 
   const position = await ExpoLocation.getCurrentPositionAsync({})
   const { latitude, longitude } = position.coords

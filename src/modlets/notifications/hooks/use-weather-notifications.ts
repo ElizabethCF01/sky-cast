@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useState } from "react"
 
 import {
-  readNotificationSettings,
-  writeNotificationSettings,
-} from "../storage/notifications-storage"
-import {
   cancelScheduled,
   ensureAndroidChannel,
   requestNotificationPermission,
   scheduleDailyWeatherReminder,
 } from "../services/weather-notifications"
+import {
+  readNotificationSettings,
+  writeNotificationSettings,
+} from "../storage/notifications-storage"
 import { type NotificationSettings } from "../types"
 
 const DEFAULT_HOUR = 8
