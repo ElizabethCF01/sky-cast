@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.background,
-    padding: spacing.xl,
+    padding: spacing.sm,
     gap: spacing.lg,
   },
   gif: {

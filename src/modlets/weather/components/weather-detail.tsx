@@ -1,5 +1,11 @@
-import { type JSX, useEffect, useState } from "react"
-import { ActivityIndicator, StyleSheet, View } from "react-native"
+import { type JSX, useCallback, useEffect, useState } from "react"
+import {
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native"
 
 import { Typography } from "#design/elements"
 import { colors } from "#design/foundations"
@@ -22,6 +28,7 @@ export default function WeatherDetail(): JSX.Element {
   const [activeLocation, setActiveLocation] = useState<Location | null>(null)
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
 
   useEffect(() => {
     if (!isLoaded || activeLocation) return
@@ -36,20 +43,37 @@ export default function WeatherDetail(): JSX.Element {
     void resolve()
   }, [isLoaded, lastLocation, activeLocation])
 
+  const loadWeather = useCallback(
+    async (location: Location): Promise<void> => {
+      const data = await fetchWeather(location)
+      setWeatherData(data)
+      await rememberLocation(location)
+    },
+    [rememberLocation],
+  )
+
   useEffect(() => {
     if (!activeLocation) return
     const location = activeLocation
     async function load(): Promise<void> {
       try {
-        const data = await fetchWeather(location)
-        setWeatherData(data)
-        await rememberLocation(location)
+        await loadWeather(location)
       } finally {
         setLoading(false)
       }
     }
     void load()
-  }, [activeLocation, rememberLocation])
+  }, [activeLocation, loadWeather])
+
+  const handleRefresh = useCallback(async (): Promise<void> => {
+    if (!activeLocation) return
+    setRefreshing(true)
+    try {
+      await loadWeather(activeLocation)
+    } finally {
+      setRefreshing(false)
+    }
+  }, [activeLocation, loadWeather])
 
   if (loading || !activeLocation) {
     return (
@@ -69,7 +93,21 @@ export default function WeatherDetail(): JSX.Element {
     )
   }
 
-  return <LocationWeatherView name={activeLocation.name} data={weatherData} />
+  return (
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.scrollContent}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          tintColor={colors.brand}
+        />
+      }
+    >
+      <LocationWeatherView name={activeLocation.name} data={weatherData} />
+    </ScrollView>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -78,6 +116,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.background,
+  },
+  scroll: {
+    flex: 1,
+    alignSelf: "stretch",
+    backgroundColor: colors.background,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "center",
   },
   error: {
     textAlign: "center",
