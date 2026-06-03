@@ -1,6 +1,7 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { useRouter } from "expo-router"
 import type React from "react"
+import { useState } from "react"
 import { FlatList, Pressable, StyleSheet, View } from "react-native"
 
 import { Typography } from "#design/elements"
@@ -9,8 +10,17 @@ import { colors, radii, spacing } from "#design/foundations"
 import { useFavorites } from "../hooks/use-favorites"
 import { type Favorite } from "../types"
 
+const PAGE_SIZE = 15
+
 export default function FavoritesListScreen(): React.ReactNode {
   const { favorites, isLoaded, removeFavorite } = useFavorites()
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
+
+  function handleEndReached(): void {
+    setVisibleCount((current) =>
+      current < favorites.length ? current + PAGE_SIZE : current,
+    )
+  }
 
   if (!isLoaded) return null
 
@@ -32,7 +42,7 @@ export default function FavoritesListScreen(): React.ReactNode {
 
   return (
     <FlatList
-      data={favorites}
+      data={favorites.slice(0, visibleCount)}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
         <FavoriteRow favorite={item} onRemove={() => removeFavorite(item.id)} />
@@ -43,6 +53,8 @@ export default function FavoritesListScreen(): React.ReactNode {
         </Typography>
       }
       contentContainerStyle={styles.list}
+      onEndReached={handleEndReached}
+      onEndReachedThreshold={0.5}
     />
   )
 }
