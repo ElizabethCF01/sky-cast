@@ -1,1 +1,1 @@
-export { WeatherHomeScreen as default } from "../../modlets/weather"
+export { WeatherHomeScreen as default } from "../../features/weather"

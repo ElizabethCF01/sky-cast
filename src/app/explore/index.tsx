@@ -1,1 +1,1 @@
-export { ExploreScreen as default } from "../../modlets/explore"
+export { ExploreScreen as default } from "../../features/explore"

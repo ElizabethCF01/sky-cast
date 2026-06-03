@@ -1,1 +1,1 @@
-export { SettingsScreen as default } from "../../../modlets/settings"
+export { SettingsScreen as default } from "../../../features/settings"

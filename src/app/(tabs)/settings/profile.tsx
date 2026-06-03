@@ -1,1 +1,1 @@
-export { ProfileScreen as default } from "../../../modlets/settings"
+export { ProfileScreen as default } from "../../../features/settings"

@@ -1,1 +1,1 @@
-export { LocationWeatherScreen as default } from "../../modlets/explore"
+export { LocationWeatherScreen as default } from "../../features/explore"

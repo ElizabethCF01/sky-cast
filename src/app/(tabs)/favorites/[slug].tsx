@@ -1,1 +1,1 @@
-export { FavoriteDetailScreen as default } from "../../../modlets/favorites"
+export { FavoriteDetailScreen as default } from "../../../features/favorites"

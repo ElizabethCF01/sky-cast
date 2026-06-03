@@ -1,8 +1,8 @@
 import { Stack } from "expo-router"
 import type React from "react"
 
-import "../modlets/notifications/setup"
-import { FavoritesProvider } from "../modlets/favorites"
+import "../features/notifications/setup"
+import { FavoritesProvider } from "../features/favorites"
 
 export default function RootLayout(): React.ReactNode {
   return (
