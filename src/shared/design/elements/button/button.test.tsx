@@ -1,6 +1,6 @@
 import { render, fireEvent } from "@testing-library/react-native"
 
-import Button from "../button"
+import Button from "./button"
 
 describe("Button", () => {
   describe("smoke", () => {

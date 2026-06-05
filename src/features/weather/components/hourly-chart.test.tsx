@@ -1,7 +1,8 @@
 import { render } from "@testing-library/react-native"
 
-import { type HourlyPoint } from "../../types"
-import HourlyChart, { buildGeometry } from "../hourly-chart"
+import { type HourlyPoint } from "../types"
+
+import HourlyChart, { buildGeometry } from "./hourly-chart"
 
 const mockPoints: HourlyPoint[] = [
   {

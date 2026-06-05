@@ -2,8 +2,8 @@ import { render, fireEvent } from "@testing-library/react-native"
 import { useState } from "react"
 import { View } from "react-native"
 
-import Button from "../button/button"
-import SearchInput from "../search-input/search-input"
+import Button from "./button/button"
+import SearchInput from "./search-input/search-input"
 
 function SearchForm({ onSearch }: { onSearch: (query: string) => void }) {
   const [query, setQuery] = useState("")
