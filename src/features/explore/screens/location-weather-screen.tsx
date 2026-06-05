@@ -1,7 +1,13 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome"
 import { useLocalSearchParams } from "expo-router"
 import type React from "react"
-import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native"
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native"
 
 import { Typography } from "#design/elements"
 import { colors, radii, spacing } from "#design/foundations"
@@ -65,28 +71,33 @@ export default function LocationWeatherScreen(): React.ReactNode {
   const subtitle = [admin1, country].filter(Boolean).join(", ")
 
   return (
-    <LocationWeatherView name={name} subtitle={subtitle} data={data}>
-      <Pressable
-        style={({ pressed }) => [
-          styles.saveButton,
-          isSaved && styles.saveButtonSaved,
-          pressed && styles.saveButtonPressed,
-        ]}
-        onPress={handleToggleSave}
-      >
-        <FontAwesome
-          name={isSaved ? "star" : "star-o"}
-          size={16}
-          color={isSaved ? colors.textPrimary : colors.textOnBrand}
-        />
-        <Typography
-          variant="bodyStrong"
-          color={isSaved ? "textPrimary" : "textOnBrand"}
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.scrollContent}
+    >
+      <LocationWeatherView name={name} subtitle={subtitle} data={data}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.saveButton,
+            isSaved && styles.saveButtonSaved,
+            pressed && styles.saveButtonPressed,
+          ]}
+          onPress={handleToggleSave}
         >
-          {isSaved ? "Saved" : "Save to favorites"}
-        </Typography>
-      </Pressable>
-    </LocationWeatherView>
+          <FontAwesome
+            name={isSaved ? "star" : "star-o"}
+            size={16}
+            color={isSaved ? colors.textPrimary : colors.textOnBrand}
+          />
+          <Typography
+            variant="bodyStrong"
+            color={isSaved ? "textPrimary" : "textOnBrand"}
+          >
+            {isSaved ? "Saved" : "Save to favorites"}
+          </Typography>
+        </Pressable>
+      </LocationWeatherView>
+    </ScrollView>
   )
 }
 
@@ -96,6 +107,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.background,
+  },
+  scroll: {
+    flex: 1,
+    alignSelf: "stretch",
+    backgroundColor: colors.background,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "center",
   },
   saveButton: {
     alignSelf: "stretch",

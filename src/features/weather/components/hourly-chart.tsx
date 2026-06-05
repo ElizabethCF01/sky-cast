@@ -12,11 +12,11 @@ import { colors, radii, spacing } from "#design/foundations"
 
 import { type HourlyPoint } from "../types"
 
-const CHART_HEIGHT = 150
-const LINE_TOP = 12
-const LINE_BOTTOM = 88
-const PRECIP_BASE = 130
-const PRECIP_MAX_HEIGHT = 36
+const CHART_HEIGHT = 110
+const LINE_TOP = 9
+const LINE_BOTTOM = 64
+const PRECIP_BASE = 95
+const PRECIP_MAX_HEIGHT = 26
 const PADDING_X = 16
 
 type Point = { x: number; y: number }

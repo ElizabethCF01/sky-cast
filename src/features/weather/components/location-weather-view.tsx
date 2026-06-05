@@ -37,7 +37,7 @@ export default function LocationWeatherView({
           </Typography>
         )}
       </View>
-      <Typography variant="display">
+      <Typography variant="display" style={styles.temperature}>
         {Math.round(data.current.temperatureC)}°C
       </Typography>
       <Typography variant="body" color="textSecondary">
@@ -61,11 +61,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.background,
     padding: spacing.sm,
-    gap: spacing.lg,
+    gap: spacing.md,
   },
   gif: {
-    width: 140,
-    height: 140,
+    width: 96,
+    height: 96,
+  },
+  temperature: {
+    fontSize: 52,
   },
   location: {
     alignItems: "center",
