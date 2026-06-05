@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router"
 import type React from "react"
-import { ActivityIndicator, StyleSheet, View } from "react-native"
+import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native"
 
 import { Typography } from "#design/elements"
 import { colors } from "#design/foundations"
@@ -41,7 +41,14 @@ export default function FavoriteDetailScreen(): React.ReactNode {
     )
   }
 
-  return <LocationWeatherView name={name} data={data} />
+  return (
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.scrollContent}
+    >
+      <LocationWeatherView name={name} data={data} />
+    </ScrollView>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -50,5 +57,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.background,
+  },
+  scroll: {
+    flex: 1,
+    alignSelf: "stretch",
+    backgroundColor: colors.background,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: "center",
   },
 })
