@@ -9,6 +9,7 @@ import { getWeatherInfo } from "../services/weather-info"
 import { type WeatherData } from "../types"
 
 import Forecast from "./forecast"
+import HourlyChart from "./hourly-chart"
 
 type Props = {
   name: string
@@ -46,6 +47,7 @@ export default function LocationWeatherView({
         Humidity {Math.round(data.current.humidityPct)}% · Wind{" "}
         {data.current.windSpeedKmh.toFixed(1)} km/h
       </Typography>
+      <HourlyChart points={data.hourly} />
       <Forecast days={data.forecast} />
       {children}
     </View>

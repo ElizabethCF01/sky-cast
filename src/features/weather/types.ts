@@ -14,7 +14,14 @@ export type WeatherData = {
     windSpeedKmh: number
     humidityPct: number
   }
+  hourly: HourlyPoint[]
   forecast: ForecastDay[]
+}
+
+export type HourlyPoint = {
+  time: string
+  temperatureC: number
+  precipitationProbabilityPct: number
 }
 
 export type ForecastDay = {
