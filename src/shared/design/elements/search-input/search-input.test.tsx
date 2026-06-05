@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react-native"
 
-import SearchInput from "../search-input"
+import SearchInput from "./search-input"
 
 describe("SearchInput", () => {
   describe("smoke", () => {

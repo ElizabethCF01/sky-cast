@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react-native"
 
-import Typography from "../typography"
+import Typography from "./typography"
 
 describe("Typography", () => {
   describe("smoke", () => {
